@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
+import MapView from 'react-native-maps'
 
 import { addPlace } from '../../store/actions/index'
 import HeaderText from '../../components/UI/HeaderText/HeaderText'
@@ -17,7 +18,11 @@ class DetailScreen extends Component {
     this.setState({
       place: {
         name: this.props.navigation.getParam('name', ''),
-        id: this.props.navigation.getParam('id', '')
+        id: this.props.navigation.getParam('id', ''),
+        userLocation: {
+          latitude: this.props.navigation.getParam('userLocation', '').latitude,
+          longitude: this.props.navigation.getParam('userLocation', '').longitude,
+        }
       }
     })
   }
@@ -29,9 +34,12 @@ class DetailScreen extends Component {
   render() {
     return (
       <View>
-        <View style={styles.placeholder}>
+        <MapView
+          initialRegion={this.state.userLocation}
+          region={this.state.userLocation}
+          style={styles.map}
 
-        </View>
+        />
         <View>
             <HeaderText>{this.state.place.name}</HeaderText>
             <Text>Texto</Text>
@@ -42,11 +50,9 @@ class DetailScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    placeholder: {
+    map: {
         width: "100%",
-        height: Dimensions.get('window').height * 0.5,
-        borderColor: "black",
-        borderWidth: 1
+        height: Dimensions.get('window').height * 0.4,
     },
     detailContainer: {
 

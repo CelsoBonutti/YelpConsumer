@@ -35,6 +35,19 @@ export default class SearchScreen extends Component {
     places: teste
   }
 
+  componentWillMount(){
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          currentLocation: position.coords
+        })
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
   priceRangeChangedHandler = (priceRange) => {
     this.setState({
       selectedPriceRange: priceRange,
@@ -43,7 +56,7 @@ export default class SearchScreen extends Component {
 
   onItemSelectedHandler = id => {
     const place = this.state.places.find(place => place.id == id)
-    this.props.navigation.navigate('Details', place);
+    this.props.navigation.navigate('Details', {...place, userLocation: this.state.currentLocation});
   }
 
   render() {

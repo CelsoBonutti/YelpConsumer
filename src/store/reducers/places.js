@@ -1,7 +1,7 @@
 import { ADD_TO_HISTORY } from '../actions/actionTypes'
 
 const initialState = {
-    placeHistory =[]
+    placeHistory: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -9,8 +9,10 @@ const reducer = (state = initialState, action) => {
         case ADD_TO_HISTORY: {
             return {
                 ...state,
-                placeHistory: state.placeHistory.concat({
-                    name: action.placeName
+                placeHistory: state.placeHistory.filter((place) => place.id !== action.place.id).concat({
+                    name: action.place.name,
+                    id: action.place.id,
+                    time: new Date().toLocaleString()
                 })
             }
         }

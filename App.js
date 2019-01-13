@@ -1,15 +1,12 @@
-import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import React, { Component } from 'react'
+import { StyleSheet } from 'react-native'
 
-import CreateTabs from './src/screens/createTabs/createTabs';
+import CreateTabs from './src/screens/createTabs/createTabs'
 
-import configureStore from './src/store/'
-
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
   render() {
     return (
-      <CreateTabs/>
+      <CreateTabs />
     );
   }
 }

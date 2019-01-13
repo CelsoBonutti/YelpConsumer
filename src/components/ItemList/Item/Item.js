@@ -3,7 +3,7 @@ import { View, TouchableNativeFeedback, StyleSheet, Text } from 'react-native'
 
 const Item = (props) => {
     return (
-        <TouchableNativeFeedback onPress={()=>{alert("Test")}}>
+        <TouchableNativeFeedback onPress={props.onPress}>
             <View style={styles.container}>
                 <Text>
                     {props.text}

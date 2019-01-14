@@ -4,48 +4,47 @@ import { Text, StyleSheet, View, Picker } from 'react-native'
 
 import ItemList from '../../components/ItemList/ItemList'
 
-teste = [
-  {
-    name: "Teste",
-    id: "1",
-    price: "1"
-  },
-  {
-    name: "Teste 2",
-    id: "2",
-    price: "2"
-  },
-  {
-    name: "Teste 3",
-    id: "3",
-    price: "3"
-  },
-  {
-    name: "Teste 4",
-    id: "4",
-    price: "4"
-  }
-]
-
 const priceOptions = [1, 2, 3, 4]
 
 export default class SearchScreen extends Component {
   state = {
-    selectedPriceRange: null,
-    places: teste
+    selectedPriceRange: '',
+    places: [],
+    page: 1,
   }
 
-  componentWillMount(){
+  componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
           currentLocation: position.coords
         })
+
+        this.makeRemoteRequest()
       },
       err => {
         console.log(err);
+        alert('Houve um problema ao tentar executar sua ação :(')
       }
     )
+  }
+
+  makeRemoteRequest = () => {
+    const url = `https://api.yelp.com/v3/businesses/search?${this.selectedPriceRange}categories=restaurants&sort_by=distance&latitude=${this.state.currentLocation.latitude}&longitude=${this.state.currentLocation.longitude}`
+    options = {
+      headers: {
+        'Authorization': 'Bearer OR6RXMGAKp4ZDXGPc4138PAfjC4FBvKIM1pjzTnp6Hi-xAYGtiD9iQ1qsKJUznWFVwef1M8ahFd7hMMqlhZ_82rQEkxFp4u39glpfhvkKN2bu8AJnEyE8SNlNHM3XHYx'
+      }
+    }
+    
+    this.setState({loading: true})
+    fetch(url, options)
+      .then(res => res.json())
+      .then( resJson => {
+        this.setState({
+          places: resJson
+        })
+      })
   }
 
   priceRangeChangedHandler = (priceRange) => {
@@ -55,17 +54,17 @@ export default class SearchScreen extends Component {
   }
 
   onItemSelectedHandler = id => {
-    const place = this.state.places.find(place => place.id == id)
-    this.props.navigation.navigate('Details', {...place, userLocation: this.state.currentLocation});
+    const place = this.state.places.businesses.find(place => place.id == id)
+    this.props.navigation.navigate('Details', { place, userLocation: this.state.currentLocation });
   }
 
   render() {
 
     const generateOptions = priceOptions.map(option =>
-      <Picker.Item label={"$".repeat(option)} key={option} value={option} />
+      <Picker.Item label={"$".repeat(option)} key={option} value={`price=${option}&`} />
     )
 
-    const itemList = this.state.selectedPriceRange ? this.state.places.filter(place => place.price == this.state.selectedPriceRange) : this.state.places
+    const itemList = this.state.places.businesses
 
     return (
       <View>

@@ -55,7 +55,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(HistoryScreen);
+export default connect(mapStateToProps,null)(HistoryScreen);

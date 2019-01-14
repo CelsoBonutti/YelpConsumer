@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { Text, StyleSheet, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import MapView from "react-native-maps";
 
@@ -42,18 +42,22 @@ class DetailScreen extends Component {
           <MapView.Marker
             coordinate={this.state.userLocation}
             pinColor="blue"
-            title="Você :)"
+            title="Você"
           />
           <MapView.Marker
             coordinate={this.state.place.coordinates}
             title={this.state.place.name}
           />
         </MapView>
-        <View>
+        <View style={styles.informationContainer}>
           <HeaderText>{this.state.place.name}</HeaderText>
+          <View>
+          <Label label="Aberto no momento" text={this.state.place.hours ? (this.state.place.hours.is_open_now ? "Sim" : "Não") : "Sem informações"}></Label>
           {this.state.place.display_phone ? (
             <Label label="Telefone" text={this.state.place.display_phone} />
           ) : null}
+          <Label label="Nota" text={this.state.place.rating}></Label><Text>baseado em {this.state.place.review_count} avaliações</Text>
+          </View>
         </View>
       </View>
     );
@@ -65,7 +69,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: Dimensions.get("window").height * 0.4
   },
-  detailContainer: {}
+  informationContainer:{
+    margin: 10,
+  },
 });
 
 mapDispatchToProps = dispatch => {

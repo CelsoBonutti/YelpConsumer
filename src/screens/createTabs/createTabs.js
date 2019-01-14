@@ -17,8 +17,8 @@ getIconOS = () => {
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Search: SearchScreen,
-    History: HistoryScreen
+    Search: { screen: SearchScreen, navigationOptions: { title: 'Busca' }},
+    History: { screen: HistoryScreen, navigationOptions: { title: 'Histórico' }}
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -46,8 +46,8 @@ const TabNavigator = createBottomTabNavigator(
 
 const RootStack = createStackNavigator(
   {
-    Home: { screen: TabNavigator, navigationOptions: {header:null}},
-    Details: { screen: DetailScreen, navigationOptions: {headerTransparent: true}}
+    Home: { screen: TabNavigator, navigationOptions: { header:null }},
+    Details: { screen: DetailScreen, navigationOptions: { headerTransparent: true }}
   },
   {
     initialRouteName: 'Home',

@@ -40,7 +40,6 @@ const TabNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: 'blue',
       inactiveTintColor: '#555',
-
     },
   }
 )
@@ -48,7 +47,7 @@ const TabNavigator = createBottomTabNavigator(
 const RootStack = createStackNavigator(
   {
     Home: { screen: TabNavigator, navigationOptions: {header:null}},
-    Details: { screen: DetailScreen, navigationOptions: {title: 'Voltar'}}
+    Details: { screen: DetailScreen, navigationOptions: {headerTransparent: true}}
   },
   {
     initialRouteName: 'Home',

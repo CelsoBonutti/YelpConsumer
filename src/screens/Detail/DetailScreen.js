@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import MapView from "react-native-maps";
 import geolib from "geolib";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import { addPlace } from "../../store/actions/index";
 import HeaderText from "../../components/UI/HeaderText/HeaderText";
@@ -22,8 +23,8 @@ class DetailScreen extends Component {
       userLocation: {
         latitude: this.props.navigation.getParam("userLocation", "").latitude,
         longitude: this.props.navigation.getParam("userLocation", "").longitude,
-        latitudeDelta: 0.2,
-        longitudeDelta: 0.2
+        latitudeDelta: 0.15,
+        longitudeDelta: 0.15
       }
     });
   }
@@ -52,10 +53,27 @@ class DetailScreen extends Component {
         </MapView>
         <View style={styles.informationContainer}>
           <HeaderText>{this.state.place.name}</HeaderText>
+          <View style={styles.topContainer}>
+            <View style={styles.rating}>
+              <Text style={styles.ratingText}>{this.state.place.rating}</Text>
+              <Icon name="md-star" color="gold" size={28} />
+            </View>
+            {this.state.place.display_phone ? (
+              <View style={styles.phone}>
+                <Icon name="md-call" size={25} color="black" />
+                <Text style={styles.phoneText}>
+                  {this.state.place.display_phone.slice(4)}
+                </Text>
+              </View>
+            ) : null}
+          </View>
           <View>
-            <Label 
+            <Label
               label="Distância"
-              text={`${geolib.getDistance(this.state.userLocation, this.state.place.coordinates)}m`}
+              text={`${geolib.getDistance(
+                this.state.userLocation,
+                this.state.place.coordinates
+              )}m`}
             />
             <Label
               label="Aberto no momento"
@@ -67,10 +85,6 @@ class DetailScreen extends Component {
                   : "Sem informações"
               }
             />
-            {this.state.place.display_phone ? 
-              (<Label label="Telefone" text={(this.state.place.display_phone).slice(4)} />) 
-              : null}
-            <Label label="Nota" text={this.state.place.rating} />
           </View>
         </View>
       </View>
@@ -81,10 +95,32 @@ class DetailScreen extends Component {
 const styles = StyleSheet.create({
   map: {
     width: "100%",
-    height: Dimensions.get("window").height * 0.4
+    height: Dimensions.get("window").height * 0.5
   },
   informationContainer: {
     margin: 10
+  },
+  rating: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  ratingText: {
+    fontSize: 20,
+    color: "black"
+  },
+  topContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20
+  },
+  phone: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  phoneText:{
+    fontSize: 20,
+    marginLeft: 5
   }
 });
 

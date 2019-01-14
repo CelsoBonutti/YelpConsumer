@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+import _ from 'lodash'
 
 import ItemList from "../../components/ItemList/ItemList";
 
@@ -41,7 +42,7 @@ class HistoryScreen extends Component {
     return (
       <View>
         <ItemList
-          itemList={this.props.places}
+          itemList={_.orderBy(this.props.places, 'time', 'desc')}
           onItemSelected={this.onItemSelectedHandler}
         />
       </View>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, Picker } from "react-native";
+import { View, Picker, ActivityIndicator } from "react-native";
 
 import ItemList from "../../components/ItemList/ItemList";
 
@@ -16,7 +16,8 @@ export default class SearchScreen extends Component {
   state = {
     selectedPriceRange: "",
     places: [],
-    page: 0
+    page: 0,
+    loading: true
   };
 
   componentDidMount() {
@@ -25,12 +26,13 @@ export default class SearchScreen extends Component {
         this.setState({
           currentLocation: position.coords
         });
-
         this.makeRemoteRequest();
       },
       err => {
         console.log(err);
-        alert("Houve um problema ao tentar executar sua ação");
+        alert(
+          "Houve um problema ao tentar conseguir sua localização. Você autorizou o GPS?"
+        );
       }
     );
   }
@@ -56,7 +58,11 @@ export default class SearchScreen extends Component {
       .then(res => res.json())
       .then(resJson => {
         this.setState({
-          places: this.state.page == 0 ? resJson.businesses : [...this.state.places, ...resJson.businesses]
+          loading: false,
+          places:
+            this.state.page == 0
+              ? resJson.businesses
+              : [...this.state.places, ...resJson.businesses]
         });
       });
   };
@@ -64,7 +70,8 @@ export default class SearchScreen extends Component {
   priceRangeChangedHandler = priceRange => {
     this.setState({
       selectedPriceRange: priceRange,
-      page: 0
+      page: 0,
+      loading: true
     });
   };
 
@@ -89,9 +96,11 @@ export default class SearchScreen extends Component {
   render() {
     const generateOptions = priceOptions.map(option => (
       <Picker.Item
-        label={ option !== 0 ? "$".repeat(option) : "Selecione um filtro"}
+        label={
+          option !== 0 ? "$".repeat(option) : "Selecione uma faixa de preços"
+        }
         key={option}
-        value={ option !== 0 ? `price=${option}&` : ""}
+        value={option !== 0 ? `price=${option}&` : ""}
       />
     ));
 
@@ -107,11 +116,18 @@ export default class SearchScreen extends Component {
         >
           {generateOptions}
         </Picker>
-        <ItemList
-          itemList={itemList}
-          onItemSelected={this.onItemSelectedHandler}
-          onEndReached={this.onEndReachedHandler}
-        />
+        {this.state.loading ? (
+          <ActivityIndicator
+            size="large"
+            color="#0000ff"
+          />
+        ) : (
+          <ItemList
+            itemList={itemList}
+            onItemSelected={this.onItemSelectedHandler}
+            onEndReached={this.onEndReachedHandler}
+          />
+        )}
       </View>
     );
   }

@@ -100,6 +100,7 @@ export default class SearchScreen extends Component {
           onPress={this.priceRangeChangedHandler}
           selectedIndex={this.state.selectedPriceRange}
           buttons={priceOptions}
+          disableSelected
         />
         {this.state.loading ? (
           <ActivityIndicator

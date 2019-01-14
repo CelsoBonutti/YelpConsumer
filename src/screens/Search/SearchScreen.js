@@ -20,32 +20,6 @@ export default class SearchScreen extends Component {
     loading: true
   };
 
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          currentLocation: position.coords
-        });
-        this.makeRemoteRequest();
-      },
-      err => {
-        console.log(err);
-        alert(
-          "Houve um problema ao tentar conseguir sua localização. Você autorizou o GPS?"
-        );
-      }
-    );
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.selectedPriceRange !== this.state.selectedPriceRange ||
-      prevState.page !== this.state.page
-    ) {
-      this.makeRemoteRequest();
-    }
-  }
-
   makeRemoteRequest = () => {
     const url = `https://api.yelp.com/v3/businesses/search?${
       this.state.selectedPriceRange
@@ -66,6 +40,31 @@ export default class SearchScreen extends Component {
         });
       });
   };
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          currentLocation: position.coords
+        });
+        this.makeRemoteRequest();
+      },
+      err => {
+        alert(
+          "Houve um problema ao tentar conseguir sua localização. Você autorizou o GPS?"
+        );
+      }
+    );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.selectedPriceRange !== this.state.selectedPriceRange ||
+      prevState.page !== this.state.page
+    ) {
+      this.makeRemoteRequest();
+    }
+  }
 
   priceRangeChangedHandler = priceRange => {
     this.setState({

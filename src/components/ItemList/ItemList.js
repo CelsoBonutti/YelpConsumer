@@ -21,7 +21,7 @@ const ItemList = props => {
         renderItem={placeList} 
         keyExtractor={item => item.id} 
         onEndReached={props.onEndReached}
-        onEndReachedThreshold={0.2}
+        onEndReachedThreshold={0.3}
       />
     </View>
   );

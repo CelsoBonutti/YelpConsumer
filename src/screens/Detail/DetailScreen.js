@@ -70,6 +70,7 @@ class DetailScreen extends Component {
             ) : null}
           </View>
           <View>
+          <View style={{width: "80%"}}>
             <Label 
               label="Endereço"            
               text={this.state.place.location.display_address[0]}  
@@ -91,6 +92,7 @@ class DetailScreen extends Component {
                 this.state.place.coordinates
               )}m`}
             />
+            </View>
           </View>
         </View>
       </View>

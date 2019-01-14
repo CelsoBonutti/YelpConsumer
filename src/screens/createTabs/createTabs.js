@@ -15,7 +15,6 @@ getIconOS = () => {
 }
 
 
-
 const TabNavigator = createBottomTabNavigator(
   {
     Search: SearchScreen,
@@ -36,7 +35,7 @@ const TabNavigator = createBottomTabNavigator(
             break;
         }
         return <Icon name={iconName} size={25} color={tintColor} />
-      },
+      }, 
     }),
     tabBarOptions: {
       activeTintColor: 'blue',
@@ -48,11 +47,11 @@ const TabNavigator = createBottomTabNavigator(
 
 const RootStack = createStackNavigator(
   {
-    Home: TabNavigator,
-    Details: DetailScreen
+    Home: { screen: TabNavigator, navigationOptions: {header:null}},
+    Details: { screen: DetailScreen, navigationOptions: {title: 'Voltar'}}
   },
   {
-    initialRouteName: 'Home'
+    initialRouteName: 'Home',
   }
 )
 

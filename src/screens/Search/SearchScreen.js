@@ -30,20 +30,25 @@ export default class SearchScreen extends Component {
       },
       err => {
         console.log(err);
-        alert("Houve um problema ao tentar executar sua ação :(");
+        alert("Houve um problema ao tentar executar sua ação");
       }
     );
   }
 
-  // componentDidUpdate(prevState){
-  //   if (prevState.selectedPriceRange !== this.state.selectedPriceRange)
-  //     this.makeRemoteRequest()
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.selectedPriceRange !== this.state.selectedPriceRange ||
+      prevState.page !== this.state.page
+    ) {
+      this.makeRemoteRequest();
+    }
+  }
 
   makeRemoteRequest = () => {
-    const url = `https://api.yelp.com/v3/businesses/search?offset=${
+    const url = `https://api.yelp.com/v3/businesses/search?${
       this.state.selectedPriceRange
-    }${20 * this.state.page}&categories=restaurants&sort_by=distance&latitude=${
+    }offset=${20 *
+      this.state.page}&categories=restaurants&sort_by=distance&latitude=${
       this.state.currentLocation.latitude
     }&longitude=${this.state.currentLocation.longitude}`;
 
@@ -51,14 +56,15 @@ export default class SearchScreen extends Component {
       .then(res => res.json())
       .then(resJson => {
         this.setState({
-          places: resJson
+          places: this.state.page == 0 ? resJson.businesses : [...this.state.places, ...resJson.businesses]
         });
       });
   };
 
   priceRangeChangedHandler = priceRange => {
     this.setState({
-      selectedPriceRange: priceRange
+      selectedPriceRange: priceRange,
+      page: 0
     });
   };
 
@@ -74,6 +80,12 @@ export default class SearchScreen extends Component {
       });
   };
 
+  onEndReachedHandler = () => {
+    this.setState({
+      page: this.state.page + 1
+    });
+  };
+
   render() {
     const generateOptions = priceOptions.map(option => (
       <Picker.Item
@@ -83,7 +95,7 @@ export default class SearchScreen extends Component {
       />
     ));
 
-    const itemList = this.state.places.businesses;
+    const itemList = this.state.places;
 
     return (
       <View>
@@ -98,6 +110,7 @@ export default class SearchScreen extends Component {
         <ItemList
           itemList={itemList}
           onItemSelected={this.onItemSelectedHandler}
+          onEndReached={this.onEndReachedHandler}
         />
       </View>
     );

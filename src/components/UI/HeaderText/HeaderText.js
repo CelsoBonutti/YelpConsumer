@@ -11,9 +11,10 @@ const HeaderText = (props) => {
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 25,
+    fontSize: 20,
     color: "black",
-    margin: 5,
+    marginTop: 5,
+    marginBottom: 5,
     fontWeight: "bold"
   }
 })

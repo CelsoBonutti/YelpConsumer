@@ -12,6 +12,7 @@ const reducer = (state = initialState, action) => {
                 placeHistory: state.placeHistory.filter((place) => place.id !== action.place.id).concat({
                     name: action.place.name,
                     id: action.place.id,
+                    image_url: action.place.image_url,
                     time: new Date().toLocaleString()
                 })
             }

@@ -1,15 +1,21 @@
-import { createStore, combineReducers, compose } from 'redux'
-import placesReducer from './reducers/places'
+import { createStore, combineReducers, compose } from "redux";
+import placesReducer from "./reducers/places";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
-    history: placesReducer
-})
+  history: placesReducer
+});
 
-let composeEnhancers = compose;
+const persistConfig = {
+  key: "root",
+  storage
+};
 
-if (__DEV__)
-    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const configureStore = () => createStore(rootReducer, composeEnhancers())
-
-export default configureStore
+export default () => {
+  let store = createStore(persistedReducer);
+  let persistor = persistStore(store);
+  return { store, persistor };
+};

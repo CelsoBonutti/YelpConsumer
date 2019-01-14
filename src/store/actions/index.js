@@ -1,0 +1,1 @@
+export { addPlace, deleteHistory, deleteItemFromHistory } from './places'

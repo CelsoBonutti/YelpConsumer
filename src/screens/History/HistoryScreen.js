@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
-import _ from 'lodash'
+import _ from "lodash";
 
+import {
+  deleteHistory,
+  deleteItemFromHistory
+} from "../../store/actions/index";
 import ItemList from "../../components/ItemList/ItemList";
 
 class HistoryScreen extends Component {
@@ -38,17 +43,47 @@ class HistoryScreen extends Component {
       });
   };
 
+  onDeletePressedHandler = id => {
+    this.props.onDeleteItemFromHistory(id);
+  };
+
+  deleteHistoryHandler = () => {
+    this.props.onDeleteHistory();
+  };
+
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <ItemList
-          itemList={_.orderBy(this.props.places, 'time', 'desc')}
+          itemList={_.orderBy(this.props.places, "time", "desc")}
           onItemSelected={this.onItemSelectedHandler}
+          onDeletePressed={this.onDeletePressedHandler}
+          isDeletable={true}
+        />
+        <Icon
+          name="trash"
+          type="font-awesome"
+          color="white"
+          underlayColor="pink"
+          containerStyle={styles.icon}
+          onPress={this.deleteHistoryHandler}
         />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    width: 50,
+    height: 50,
+    backgroundColor: "red",
+    borderRadius: 50,
+    position: "absolute",
+    bottom: 10,
+    right: 10
+  }
+});
 
 const mapStateToProps = state => {
   return {
@@ -56,4 +91,18 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps,null)(HistoryScreen);
+mapDispatchToProps = dispatch => {
+  return {
+    onDeleteHistory: () => {
+      dispatch(deleteHistory());
+    },
+    onDeleteItemFromHistory: id => {
+      dispatch(deleteItemFromHistory(id));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HistoryScreen);

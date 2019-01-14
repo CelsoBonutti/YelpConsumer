@@ -7,82 +7,67 @@ import {
   Image,
   Dimensions
 } from "react-native";
+import { ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const Item = props => {
   return (
-    <TouchableNativeFeedback onPress={props.onPress}>
-      <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: props.image ? props.image : "http://via.placeholder.com/70x70"
-          }}
-        />
-        <View style={styles.information}>
-          <View style={styles.topText}>
-            <Text style={styles.nameText}>{props.text}</Text>
-            <View style={styles.rating}>
-              <Text style={styles.text}>{props.rating}</Text>
-              <Icon name="md-star" color="gold" size={20} />
-            </View>
+    <ListItem
+      onPress={props.onPress}
+      avatar={{
+        uri: props.image ? props.image : "via.placeholder.com/100x100"
+      }}
+      avatarContainerStyle={styles.avatarContainer}
+      avatarStyle={styles.avatar}
+      title={props.text}
+      subtitle={
+        props.display_phone ? (
+          <View style={styles.phone}>
+            <Icon name="md-call" color="black" />
+            <Text style={{ marginLeft: 3 }}>
+              {props.display_phone.slice(4)}
+            </Text>
           </View>
-          {props.display_phone ? 
-          (<View style={styles.phone}>
-            <Icon name="md-call" size={15} color="black"></Icon>
-            <Text style={styles.phoneText}>{props.display_phone.slice(4)}</Text>
-          </View>)
-          : null }
-        </View>
-      </View>
-    </TouchableNativeFeedback>
+        ) : null
+      }
+      rightIcon={
+        props.isDeletable ? (
+          {
+            name: "trash",
+            type: "font-awesome",
+            color: "red"
+          }
+        ) : (
+          <View style={styles.rating}>
+            <Text>{props.rating}</Text>
+            <Icon name="md-star" color="gold" size={20} />
+          </View>
+        )
+      }
+      onPressRightIcon={props.isDeletable ? props.onDeletePressed : null}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#eee",
-    marginTop: 10,
-    padding: 10,
-    height: 90,
+  phone: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "flex-start",
-    alignItems: "center"
-  },
-  image: {
-    width: 70,
-    height: 70,
-    marginRight: 5
-  },
-  nameText: {
-    fontSize: 15,
-    color: "black",
-    width: "80%"
+    marginLeft: 10
   },
   rating: {
     flexDirection: "row",
-    width: "20%",
+    alignItems: "center",
     justifyContent: "flex-end"
   },
-  topText: {
-    flexDirection: "row",
-    width: Dimensions.get("window").width - 100,
-    justifyContent: "space-between"
+  avatarContainer:{
+    width: 60,
+    height: 60
   },
-  information: {
-    height: "100%",
-    flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "flex-start"
-  },
-  phone:{
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
-  phoneText:{
-    fontSize: 14,
-    marginLeft: 5
+  avatar:{
+    width: "100%",
+    height: "100%"
   }
 });
 

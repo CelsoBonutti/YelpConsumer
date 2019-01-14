@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MapView from "react-native-maps";
 import geolib from "geolib";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Rating } from "react-native-elements";
 
 import { addPlace } from "../../store/actions/index";
 import HeaderText from "../../components/UI/HeaderText/HeaderText";
@@ -54,10 +55,11 @@ class DetailScreen extends Component {
         <View style={styles.informationContainer}>
           <HeaderText>{this.state.place.name}</HeaderText>
           <View style={styles.topContainer}>
-            <View style={styles.rating}>
-              <Text style={styles.ratingText}>{this.state.place.rating}</Text>
-              <Icon name="md-star" color="gold" size={28} />
-            </View>
+            <Rating
+              imageSize={20}
+              readonly
+              startingValue={this.state.place.rating}
+            />
             {this.state.place.display_phone ? (
               <View style={styles.phone}>
                 <Icon name="md-call" size={25} color="black" />
@@ -68,12 +70,9 @@ class DetailScreen extends Component {
             ) : null}
           </View>
           <View>
-            <Label
-              label="Distância"
-              text={`${geolib.getDistance(
-                this.state.userLocation,
-                this.state.place.coordinates
-              )}m`}
+            <Label 
+              label="Endereço"            
+              text={this.state.place.location.display_address[0]}  
             />
             <Label
               label="Aberto no momento"
@@ -84,6 +83,13 @@ class DetailScreen extends Component {
                     : "Não"
                   : "Sem informações"
               }
+            />
+            <Label
+              label="Distância"
+              text={`${geolib.getDistance(
+                this.state.userLocation,
+                this.state.place.coordinates
+              )}m`}
             />
           </View>
         </View>
@@ -100,14 +106,6 @@ const styles = StyleSheet.create({
   informationContainer: {
     margin: 10
   },
-  rating: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  ratingText: {
-    fontSize: 20,
-    color: "black"
-  },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -115,10 +113,10 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   phone: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center"
   },
-  phoneText:{
+  phoneText: {
     fontSize: 20,
     marginLeft: 5
   }

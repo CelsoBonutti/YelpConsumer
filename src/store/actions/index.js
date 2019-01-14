@@ -1,1 +1,1 @@
-export { addPlace } from './places'
+export { addPlace, deleteHistory, deleteItemFromHistory } from './places'

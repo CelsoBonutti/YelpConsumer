@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, Picker } from "react-native";
 
 import ItemList from "../../components/ItemList/ItemList";
 
-const priceOptions = [1, 2, 3, 4];
+const priceOptions = [0, 1, 2, 3, 4];
 
 const headerOptions = {
   headers: {
@@ -89,9 +89,9 @@ export default class SearchScreen extends Component {
   render() {
     const generateOptions = priceOptions.map(option => (
       <Picker.Item
-        label={"$".repeat(option)}
+        label={ option !== 0 ? "$".repeat(option) : "Selecione um filtro"}
         key={option}
-        value={`price=${option}&`}
+        value={ option !== 0 ? `price=${option}&` : ""}
       />
     ));
 

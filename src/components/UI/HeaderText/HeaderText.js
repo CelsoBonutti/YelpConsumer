@@ -11,7 +11,7 @@ const HeaderText = (props) => {
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 20,
+    fontSize: 22,
     color: "black",
     marginTop: 5,
     marginBottom: 5,

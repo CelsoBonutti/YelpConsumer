@@ -12,7 +12,11 @@ const Item = props => {
     <TouchableNativeFeedback onPress={props.onPress}>
       <View style={styles.container}>
         <Image style={styles.image} source={{uri: props.image ? props.image : "http://via.placeholder.com/70x70"}} />
+        <View>
         <Text style={styles.text}>{props.text}</Text>
+        <Text style={styles.text}>Nota {props.rating}</Text>
+        <Text style={styles.text}>{(props.display_phone).slice(4)}</Text>
+        </View>
       </View>
     </TouchableNativeFeedback>
   );

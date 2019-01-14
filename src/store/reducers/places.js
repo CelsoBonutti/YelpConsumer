@@ -13,6 +13,8 @@ const reducer = (state = initialState, action) => {
                     name: action.place.name,
                     id: action.place.id,
                     image_url: action.place.image_url,
+                    display_phone: action.place.display_phone,
+                    rating: action.place.rating,
                     time: new Date().toLocaleString()
                 })
             }

@@ -21,10 +21,11 @@ const styles = StyleSheet.create({
     label: {
         color: "black",
         marginRight: 5,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        fontSize: 17
     },
     text: {
-
+        fontSize: 17
     }
 })
 

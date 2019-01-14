@@ -7,6 +7,8 @@ const ItemList = props => {
     <Item
       text={info.item.name}
       image={info.item.image_url}
+      display_phone={info.item.display_phone}
+      rating={info.item.rating}
       key={info.item.id}
       onPress={() => props.onItemSelected(info.item.id)}
     />

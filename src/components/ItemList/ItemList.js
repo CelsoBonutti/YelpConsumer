@@ -8,6 +8,7 @@ const ItemList = (props) => {
   const placeList = (info) =>
     <Item
       text={info.item.name}
+      image={info.item.image_url}
       key={info.item.id}
       onPress={() => props.onItemSelected(info.item.id)}
     />

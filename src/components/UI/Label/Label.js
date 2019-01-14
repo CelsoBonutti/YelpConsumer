@@ -16,16 +16,19 @@ const Label = (props) => {
 
 const styles = StyleSheet.create({
     container:{
-        flexDirection: "row"
+        flexDirection: "row",
+        width: "100%",
+        marginBottom: 10
     },
     label: {
         color: "black",
         marginRight: 5,
         fontWeight: "bold",
-        fontSize: 17
+        fontSize: 17,
     },
     text: {
-        fontSize: 17
+        fontSize: 17,
+        width: "90%"
     }
 })
 

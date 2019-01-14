@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { View, Picker, ActivityIndicator } from "react-native";
+import { ButtonGroup, Button } from 'react-native-elements'
 
 import ItemList from "../../components/ItemList/ItemList";
 
-const priceOptions = [0, 1, 2, 3, 4];
+const priceOptions = ["Todos", "$", "$$", "$$$", "$$$$"];
 
 const headerOptions = {
   headers: {
@@ -14,15 +15,15 @@ const headerOptions = {
 
 export default class SearchScreen extends Component {
   state = {
-    selectedPriceRange: "",
     places: [],
     page: 0,
-    loading: true
+    loading: true,
+    selectedPriceRange: 0
   };
 
   makeRemoteRequest = () => {
     const url = `https://api.yelp.com/v3/businesses/search?${
-      this.state.selectedPriceRange
+      this.state.selectedPriceRange ? `price=${this.state.selectedPriceRange}&` : ""
     }offset=${20 *
       this.state.page}&categories=restaurants&sort_by=distance&latitude=${
       this.state.currentLocation.latitude
@@ -93,28 +94,13 @@ export default class SearchScreen extends Component {
   };
 
   render() {
-    const generateOptions = priceOptions.map(option => (
-      <Picker.Item
-        label={
-          option !== 0 ? "$".repeat(option) : "Selecione uma faixa de preços"
-        }
-        key={option}
-        value={option !== 0 ? `price=${option}&` : ""}
-      />
-    ));
-
-    const itemList = this.state.places;
-
     return (
       <View>
-        <Picker
-          selectedValue={this.state.selectedPriceRange}
-          onValueChange={(itemValue, itemIndex) =>
-            this.priceRangeChangedHandler(itemValue)
-          }
-        >
-          {generateOptions}
-        </Picker>
+        <ButtonGroup
+          onPress={this.priceRangeChangedHandler}
+          selectedIndex={this.state.selectedPriceRange}
+          buttons={priceOptions}
+        />
         {this.state.loading ? (
           <ActivityIndicator
             size="large"
@@ -122,7 +108,7 @@ export default class SearchScreen extends Component {
           />
         ) : (
           <ItemList
-            itemList={itemList}
+            itemList={this.state.places}
             onItemSelected={this.onItemSelectedHandler}
             onEndReached={this.onEndReachedHandler}
           />

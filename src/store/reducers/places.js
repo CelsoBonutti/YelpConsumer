@@ -1,4 +1,4 @@
-import { ADD_TO_HISTORY } from '../actions/actionTypes'
+import { ADD_TO_HISTORY, DELETE_HISTORY, DELETE_ITEM_FROM_HISTORY } from '../actions/actionTypes'
 
 const initialState = {
     placeHistory: []
@@ -17,6 +17,18 @@ const reducer = (state = initialState, action) => {
                     rating: action.place.rating,
                     time: new Date().toLocaleString()
                 })
+            }
+        }
+        case DELETE_HISTORY: {
+            return {
+                ...state,
+                placeHistory: []
+            }
+        }
+        case DELETE_ITEM_FROM_HISTORY: {
+            return{
+                ...state,
+                placeHistory: state.placeHistory.filter((place) => place.id !== action.placeId)
             }
         }
         default:
